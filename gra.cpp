@@ -94,7 +94,6 @@ void Gra::menu()
         delete gracz;
         delete talia;
         nastole=nullptr;
-        disconnect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
     }
     else if(state=="polacz") delete dodajPoloczenie;
     state="menu";
