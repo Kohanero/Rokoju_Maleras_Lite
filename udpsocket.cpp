@@ -13,6 +13,13 @@ UdpSocket::UdpSocket(QGraphicsView *viev,QObject *parent):QObject(parent)
 
 }
 
+QList<QString> UdpSocket::getConnections()
+{
+    QList<QString> list;
+    for(QHostAddress address:allConnections) list.push_front(address.toString());
+    return list;
+}
+
 void UdpSocket::addConnection(QString address)
 {
     QByteArray data;
@@ -27,13 +34,15 @@ void UdpSocket::readyRead()
     buffer.resize(myudpsocket->pendingDatagramSize());
     unsigned short int port;
     myudpsocket->readDatagram(buffer.data(),buffer.size(),&sender,&port);
+    qDebug()<<buffer.data();
     if(czekajNaAdresy)
     {
         if(buffer=="koniec")
         {
             czekajNaAdresy=false;
-            qDebug()<<allConnections.size();
+            //qDebug()<<allConnections.size();
             emit connected();
+            send(sender.toString(),sender);
             return;
         }
         QHostAddress newAddress(buffer.data());
@@ -47,14 +56,21 @@ void UdpSocket::readyRead()
         if(t) allConnections.push_front(newAddress);
 
     }
+    if(czekajNaTwojAdres)
+    {
+        twojAdres=buffer.data();
+        czekajNaTwojAdres=false;
+         //qDebug()<<twojAdres;
+    }
     bool t=false;
     if(buffer=="connect")
     {
         t=true;
         send("connected");
         for(QHostAddress address:allConnections)
-            if(sender!=address) send(address.toString(),sender);
+            if(sender!=address) send(address.toString());
         send("koniec");
+        czekajNaTwojAdres=true;
     }
     if(buffer=="connected")
     {
@@ -69,9 +85,7 @@ void UdpSocket::readyRead()
             }
     if(t) allConnections.push_front(sender);
     if(buffer=="disconnect") allConnections.removeOne(sender);
-    int a=buffer.toInt();
-    if(a!=0)
-        emit karta(a);
+    emit karta(buffer.data(),sender.toString());
 }
 
 void UdpSocket::send(QString messege, QHostAddress address)

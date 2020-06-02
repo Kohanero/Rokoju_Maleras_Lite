@@ -31,7 +31,7 @@ public slots:
     void tura();
     void koniectury(Karta*);
     void instrukcja();
-    void recive(int k);
+    void recive(QString,QString);
     void send(int);
     void polacz();
 

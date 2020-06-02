@@ -9,7 +9,7 @@ class Gracz :public QObject
 {
     Q_OBJECT
 public:
-    Gracz(Gra *gra);
+    Gracz(Gra *gra,QString nazwa);
     Karta* dobierz();
     bool tura=false;
     Karta *k1=nullptr;

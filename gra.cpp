@@ -28,9 +28,8 @@ Gra::Gra(QWidget *parent) :QGraphicsView(parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(rec.width(),rec.height());
     setScene(scene);
-    gracz=new Gracz(this);
     poloczenie=new UdpSocket(this);
-    connect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
+    connect(poloczenie,SIGNAL(karta(QString,QString)),this,SLOT(recive(QString,QString)));
     connect(poloczenie,SIGNAL(connected()),this,SLOT(menu()));
     menu();
 }
@@ -72,11 +71,16 @@ QList<Przycisk *> Gra::getPrzyciskGracze()
 void Gra::start()
 {
     if(state=="polacz") delete dodajPoloczenie;
-    gracz=new Gracz(this);
+    gracz=new Gracz(this,"");
     scene->clear();
     state="start";
     talia=new Talia(this);
     talia->tasuj();
+    for(QString nazwa:poloczenie->getConnections())
+    {
+        Gracz *g = new Gracz(this,nazwa);
+        gracze.push_front(g);
+    }
     tura();
 
 }
@@ -191,8 +195,14 @@ void Gra::instrukcja()
 
 }
 
-void Gra::recive(int k)
+void Gra::recive(QString s,QString nadawca)
 {
+    if(!isdigit(s.toStdString()[0]))
+    {
+        return;
+    }
+    int k=s.toInt();
+    if(k==0) return;
     if(state!="start") start();
     if(k<10)
     {

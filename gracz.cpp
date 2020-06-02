@@ -1,7 +1,8 @@
 #include "gracz.h"
 #include"gra.h"
-Gracz::Gracz(Gra *gra) :QObject()
+Gracz::Gracz(Gra *gra, QString nazwa) :QObject()
 {
+    this->nazwa=nazwa;
     this->gra=gra;
 }
 
