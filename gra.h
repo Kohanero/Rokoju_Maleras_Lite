@@ -24,6 +24,7 @@ public:
     QGraphicsScene *scene;
     Karta *nastole=nullptr;
 public slots:
+    void nowaGra();
     void start();
     void stop();
     void menu();

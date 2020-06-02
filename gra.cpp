@@ -1,4 +1,4 @@
- #include "gra.h"
+#include "gra.h"
 #include<QApplication>
 #include<QDesktopWidget>
 #include<QBrush>
@@ -99,9 +99,9 @@ void Gra::menu()
     else if(state=="polacz") delete dodajPoloczenie;
     state="menu";
     scene->clear();
-    Przycisk *przycisk=new Przycisk("Start");
+    Przycisk *przycisk=new Przycisk("Nowa Gra");
     przycisk->setX(width()/2-przycisk->boundingRect().width()/2);
-    connect(przycisk,SIGNAL(clicked(QString)),this,SLOT(start()));
+    connect(przycisk,SIGNAL(clicked(QString)),this,SLOT(nowaGra()));
     scene->addItem(przycisk);
     przycisk=new Przycisk("Połącz");
     przycisk->setX(width()/2-przycisk->boundingRect().width()/2);
@@ -167,6 +167,12 @@ void Gra::kolejnatura(int m)
         nastole->setY(height()/2-nastole->boundingRect().height()/2);
         scene->addItem(nastole);
     }
+    tura();
+}
+
+void Gra::nowaGra()
+{
+    start();
     tura();
 }
 
