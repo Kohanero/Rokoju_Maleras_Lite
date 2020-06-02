@@ -154,19 +154,25 @@ void Gra::koniectury(Karta* k)
 
 void Gra::kolejnatura(int m)
 {
-    Karta *k=talia->dobierzMoc(m);
-    if(k!=nullptr)
+    Karta *k;
+    if(m==1) k=new Roslinka(":/images/1.png",this);
+    else if(m==2) k=new Mysz(":/images/2.png",this);
+    else if(m==3) k=new Kaczor(":/images/3.png",this);
+    else if(m==4) k=new Pierscien(":/images/4.png",this);
+    else if(m==5) k=new Troll(":/images/5.png",this);
+    else if(m==6) k=new Altanka(":/images/6.png",this);
+    else if(m==7) k=new Smok(":/images/7.png",this);
+    else if(m==8) k=new Skarb(":/images/8.png",this);
+    else return;
+    if(nastole!=nullptr)
     {
-        if(nastole!=nullptr)
-        {
-            scene->removeItem(nastole);
-            delete nastole;
-        }
-        nastole=k;
-        nastole->setX(width()/2-nastole->boundingRect().width()/2);
-        nastole->setY(height()/2-nastole->boundingRect().height()/2);
-        scene->addItem(nastole);
+        scene->removeItem(nastole);
+        delete nastole;
     }
+    nastole=k;
+    nastole->setX(width()/2-nastole->boundingRect().width()/2);
+    nastole->setY(height()/2-nastole->boundingRect().height()/2);
+    scene->addItem(nastole);
     tura();
 }
 
@@ -191,7 +197,6 @@ void Gra::recive(int k)
     if(state!="start") start();
     if(k<10)
     {
-
         kolejnatura(k);
         return;
     }
