@@ -33,6 +33,7 @@ void UdpSocket::readyRead()
         {
             czekajNaAdresy=false;
             qDebug()<<allConnections.size();
+            emit connected();
             return;
         }
         QHostAddress newAddress(buffer.data());
@@ -77,8 +78,8 @@ void UdpSocket::send(QString messege, QHostAddress address)
 {
     QByteArray data;
     data.append(messege);
-    if(address!=QHostAddress::Null) myudpsocket->writeDatagram(data,address,1234);
-    for(QHostAddress address:allConnections) myudpsocket->writeDatagram(data,address,1234);
+    if(address!=QHostAddress::Null) qDebug()<<myudpsocket->writeDatagram(data,address,1234);
+    for(QHostAddress address:allConnections) qDebug()<<myudpsocket->writeDatagram(data,address,1234);
 
 }
 

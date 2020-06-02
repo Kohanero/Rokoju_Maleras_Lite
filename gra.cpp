@@ -31,6 +31,7 @@ Gra::Gra(QWidget *parent) :QGraphicsView(parent)
     gracz=new Gracz(this);
     poloczenie=new UdpSocket(this);
     connect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
+    connect(poloczenie,SIGNAL(connected()),this,SLOT(menu()));
     menu();
 }
 
@@ -210,6 +211,5 @@ void Gra::polacz()
     dodajPoloczenie->move(width()/2-dodajPoloczenie->width()/2,height()/2-dodajPoloczenie->height()/2);
     dodajPoloczenie->setVisible(true);
     connect(dodajPoloczenie,SIGNAL(wyslij(QString)),poloczenie,SLOT(addConnection(QString)));
-    connect(dodajPoloczenie,SIGNAL(wyslij(QString)),this,SLOT(start()));
 
 }
