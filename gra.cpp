@@ -1,4 +1,4 @@
-#include "gra.h"
+ #include "gra.h"
 #include<QApplication>
 #include<QDesktopWidget>
 #include<QBrush>
@@ -69,12 +69,14 @@ QList<Przycisk *> Gra::getPrzyciskGracze()
 
 void Gra::start()
 {
+    if(state=="polacz") delete dodajPoloczenie;
     gracz=new Gracz(this);
     scene->clear();
     state="start";
     talia=new Talia(this);
     talia->tasuj();
     connect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
+    tura();
 
 }
 
@@ -181,6 +183,7 @@ void Gra::recive(int k)
 {
     if(k<10)
     {
+        if(state!="start") start();
         kolejnatura(k);
         return;
     }
@@ -206,5 +209,6 @@ void Gra::polacz()
     dodajPoloczenie->move(width()/2-dodajPoloczenie->width()/2,height()/2-dodajPoloczenie->height()/2);
     dodajPoloczenie->setVisible(true);
     connect(dodajPoloczenie,SIGNAL(wyslij(QString)),poloczenie,SLOT(addConnection(QString)));
+    connect(dodajPoloczenie,SIGNAL(wyslij(QString)),this,SLOT(start()));
 
 }
