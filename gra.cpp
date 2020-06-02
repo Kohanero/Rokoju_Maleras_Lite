@@ -30,6 +30,7 @@ Gra::Gra(QWidget *parent) :QGraphicsView(parent)
     setScene(scene);
     gracz=new Gracz(this);
     poloczenie=new UdpSocket(this);
+    connect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
     menu();
 }
 
@@ -75,7 +76,6 @@ void Gra::start()
     state="start";
     talia=new Talia(this);
     talia->tasuj();
-    connect(poloczenie,SIGNAL(karta(int)),this,SLOT(recive(int)));
     tura();
 
 }
@@ -181,9 +181,10 @@ void Gra::instrukcja()
 
 void Gra::recive(int k)
 {
+    if(state!="start") start();
     if(k<10)
     {
-        if(state!="start") start();
+
         kolejnatura(k);
         return;
     }
