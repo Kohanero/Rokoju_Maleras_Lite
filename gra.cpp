@@ -193,6 +193,7 @@ void Gra::kolejnatura(int m)
 void Gra::nowaGra()
 {
     host=true;
+    poloczenie->send("start");
     start("xd");
 }
 
@@ -209,7 +210,11 @@ void Gra::instrukcja()
 void Gra::recive(QString s,QString nadawca)
 {
     qDebug()<<s;
-    if(state!="start") start("xd");
+    if(state!="start" && s=="start")
+    {
+        start("xd");
+        return;
+    }
     if(!isdigit(s.toStdString()[0]))
     {
         if(s=="tura") tura();
