@@ -44,7 +44,6 @@ void UdpSocket::readyRead()
     buffer.resize(myudpsocket->pendingDatagramSize());
     unsigned short int port;
     myudpsocket->readDatagram(buffer.data(),buffer.size(),&sender,&port);
-    qDebug()<<buffer.data();
     if(buffer=="giveme") send(sender.toString(),sender);
     if(czekajNaAdresy)
     {
@@ -71,7 +70,6 @@ void UdpSocket::readyRead()
         twojAdres=buffer.data();
         czekajNaTwojAdres=false;
         emit start(twojAdres);
-        qDebug()<<twojAdres;
     }
     bool t=false;
     bool w=false;
