@@ -14,16 +14,18 @@ public slots:
     void readyRead();
     void send(QString,QHostAddress address=QHostAddress::Null);
     void addConnection(QString);
+    void dajMojAddres();
 signals:
     void karta(QString,QString);
     void connected();
     void tura();
+    void start(QString);
 private:
     QUdpSocket *myudpsocket;
     QList<QHostAddress> allConnections;
     bool czekajNaAdresy=false;
-    bool czekajNaTwojAdres;
-    QString twojAdres;
+    bool czekajNaTwojAdres=false;
+    QString twojAdres=nullptr;
 };
 
 #endif // UDPSOCKET_H

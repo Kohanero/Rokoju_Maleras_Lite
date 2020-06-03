@@ -22,6 +22,7 @@ SOURCES += \
     dodajpoloczenie.cpp \
     gra.cpp \
     gracz.cpp \
+    gracze.cpp \
     instrukcja.cpp \
     kaczor.cpp \
     karta.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     dodajpoloczenie.h \
     gra.h \
     gracz.h \
+    gracze.h \
     instrukcja.h \
     kaczor.h \
     karta.h \

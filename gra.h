@@ -12,6 +12,7 @@
 #include"udpsocket.h"
 #include<QInputDialog>
 #include"dodajpoloczenie.h"
+#include"gracze.h"
 class Gra:public QGraphicsView
 {
     Q_OBJECT
@@ -25,23 +26,22 @@ public:
     Karta *nastole=nullptr;
 public slots:
     void nowaGra();
-    void start();
+    void start(QString);
     void stop();
     void menu();
     void tura();
     void koniectury(Karta*);
     void instrukcja();
     void recive(QString,QString);
-    void send(int);
     void polacz();
 
 private:
     Gracz *gracz;
     Gracz *turagracza;
-    QList<Gracz*> gracze;
-
+    Gracze *gracze;
     Talia *talia;
     QString state;
+    bool host=false;
     Instrukcja *instru;
     UdpSocket *poloczenie;
     DodajPoloczenie *dodajPoloczenie;

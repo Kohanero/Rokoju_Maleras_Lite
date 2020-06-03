@@ -31,6 +31,7 @@ Gra::Gra(QWidget *parent) :QGraphicsView(parent)
     poloczenie=new UdpSocket(this);
     connect(poloczenie,SIGNAL(karta(QString,QString)),this,SLOT(recive(QString,QString)));
     connect(poloczenie,SIGNAL(connected()),this,SLOT(menu()));
+    connect(poloczenie,SIGNAL(start(QString)),this,SLOT(start(QString)));
     menu();
 }
 
@@ -68,20 +69,21 @@ QList<Przycisk *> Gra::getPrzyciskGracze()
 }
 
 
-void Gra::start()
+void Gra::start(QString nazwa)
 {
-    if(state=="polacz") delete dodajPoloczenie;
-    gracz=new Gracz(this,"");
+    gracz=new Gracz(this,nazwa);
     scene->clear();
-    state="start";
+    gracze = new Gracze(gracz);
     talia=new Talia(this);
     talia->tasuj();
     for(QString nazwa:poloczenie->getConnections())
     {
         Gracz *g = new Gracz(this,nazwa);
-        gracze.push_front(g);
+        gracze->push_front(g);
     }
     tura();
+    if(host) tura();
+    state="start";
 
 }
 
@@ -97,6 +99,7 @@ void Gra::menu()
     {
         delete gracz;
         delete talia;
+        delete gracze;
         nastole=nullptr;
     }
     else if(state=="polacz") delete dodajPoloczenie;
@@ -131,7 +134,7 @@ void Gra::tura()
         gracz->tura=true;
         return;
     }
-    send(k->getMoc()+10);
+    poloczenie->send(QString::number(k->getMoc()+10));
     k->setY(height()-k->boundingRect().height());
     scene->addItem(k);
     gracz->k1->setX(width()/2-gracz->k1->boundingRect().width());
@@ -152,7 +155,7 @@ void Gra::koniectury(Karta* k)
     nastole=k;
     nastole->setX(width()/2-nastole->boundingRect().width()/2);
     nastole->setY(height()/2-nastole->boundingRect().height()/2);
-    send(nastole->getMoc());
+    poloczenie->send(QString::number(nastole->getMoc()));
 }
 
 void Gra::kolejnatura(int m)
@@ -176,13 +179,18 @@ void Gra::kolejnatura(int m)
     nastole->setX(width()/2-nastole->boundingRect().width()/2);
     nastole->setY(height()/2-nastole->boundingRect().height()/2);
     scene->addItem(nastole);
-    tura();
+    if(host)
+    {
+        QString nastepnyGracz=gracze->nastepnyGracz();
+        if(gracz->getNazwa()==nastepnyGracz) tura();
+        else poloczenie->send("tura",QHostAddress(nastepnyGracz));
+    }
 }
 
 void Gra::nowaGra()
 {
-    start();
-    tura();
+    host=true;
+    poloczenie->dajMojAddres();
 }
 
 void Gra::instrukcja()
@@ -199,11 +207,12 @@ void Gra::recive(QString s,QString nadawca)
 {
     if(!isdigit(s.toStdString()[0]))
     {
+        if(s=="tura") tura();
         return;
     }
     int k=s.toInt();
     if(k==0) return;
-    if(state!="start") start();
+    if(state!="start") poloczenie->dajMojAddres();
     if(k<10)
     {
         kolejnatura(k);
@@ -216,11 +225,6 @@ void Gra::recive(QString s,QString nadawca)
     }
 }
 
-void Gra::send(int w)
-{
-
-    poloczenie->send(QString::number(w));
-}
 
 void Gra::polacz()
 {
