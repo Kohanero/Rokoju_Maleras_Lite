@@ -216,8 +216,8 @@ void Gra::recive(QString s,QString nadawca)
     qDebug()<<s;
     if(state!="start" && s=="start")
     {
-        czyja->setPlainText("twoja tura");
         start("xd");
+        czyja->setPlainText("twoja tura");
         return;
     }
     if(!isdigit(s.toStdString()[0]))
