@@ -131,7 +131,6 @@ void Gra::menu()
 
 void Gra::tura()
 {
-    czyja->setPlainText("twoja tura");
     Karta *k=gracz->dobierz();
     if(k==nullptr)
     {
@@ -198,6 +197,7 @@ void Gra::nowaGra()
 {
     host=true;
     poloczenie->send("start");
+    czyja->setPlainText("twoja tura");
     start("xd");
 }
 
@@ -222,6 +222,7 @@ void Gra::recive(QString s,QString nadawca)
     if(!isdigit(s.toStdString()[0]))
     {
         if(s=="tura") tura();
+        czyja->setPlainText("twoja tura");
         return;
     }
     int k=s.toInt();
