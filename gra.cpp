@@ -197,8 +197,8 @@ void Gra::nowaGra()
 {
     host=true;
     poloczenie->send("start");
-    czyja->setPlainText("twoja tura");
     start("xd");
+    czyja->setPlainText("twoja tura");
 }
 
 void Gra::instrukcja()
@@ -216,6 +216,7 @@ void Gra::recive(QString s,QString nadawca)
     qDebug()<<s;
     if(state!="start" && s=="start")
     {
+        czyja->setPlainText("twoja tura");
         start("xd");
         return;
     }
