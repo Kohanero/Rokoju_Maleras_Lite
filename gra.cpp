@@ -221,8 +221,12 @@ void Gra::recive(QString s,QString nadawca)
     }
     if(!isdigit(s.toStdString()[0]))
     {
-        if(s=="tura") tura();
-        czyja->setPlainText("twoja tura");
+        if(s=="tura")
+        {
+            tura();
+            czyja->setPlainText("twoja tura");
+        }
+
         return;
     }
     int k=s.toInt();
