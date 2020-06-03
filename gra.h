@@ -13,6 +13,7 @@
 #include<QInputDialog>
 #include"dodajpoloczenie.h"
 #include"gracze.h"
+#include<QGraphicsTextItem>
 class Gra:public QGraphicsView
 {
     Q_OBJECT
@@ -45,6 +46,7 @@ private:
     Instrukcja *instru;
     UdpSocket *poloczenie;
     DodajPoloczenie *dodajPoloczenie;
+    QGraphicsTextItem *czyja;
 
 
 };

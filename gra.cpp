@@ -84,6 +84,8 @@ void Gra::start(QString nazwa)
     tura();
     if(host) tura();
     state="start";
+    czyja=new QGraphicsTextItem;
+    scene->addItem(czyja);
 
 }
 
@@ -128,6 +130,7 @@ void Gra::menu()
 
 void Gra::tura()
 {
+    czyja->setPlainText("twoja tura");
     Karta *k=gracz->dobierz();
     if(k==nullptr)
     {
@@ -146,7 +149,7 @@ void Gra::tura()
 void Gra::koniectury(Karta* k)
 {
     //if(!gracz->tura) return;
-
+    czyja->setPlainText("nie twoja tura");
     if(nastole!=nullptr)
     {
         scene->removeItem(nastole);
