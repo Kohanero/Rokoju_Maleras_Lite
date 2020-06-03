@@ -159,6 +159,7 @@ void Gra::koniectury(Karta* k)
     nastole->setX(width()/2-nastole->boundingRect().width()/2);
     nastole->setY(height()/2-nastole->boundingRect().height()/2);
     poloczenie->send(QString::number(nastole->getMoc()));
+    nastepnyGracz();
 }
 
 void Gra::kolejnatura(int m)
@@ -182,6 +183,11 @@ void Gra::kolejnatura(int m)
     nastole->setX(width()/2-nastole->boundingRect().width()/2);
     nastole->setY(height()/2-nastole->boundingRect().height()/2);
     scene->addItem(nastole);
+    nastepnyGracz();
+}
+
+void Gra::nastepnyGracz()
+{
     if(host)
     {
         Gracz *g=gracze.last();
@@ -190,6 +196,7 @@ void Gra::kolejnatura(int m)
         gracze.push_front(g);
         if(gracz->getNazwa()==nastepnyGracz) tura();
         else poloczenie->send("tura",QHostAddress(nastepnyGracz));
+        qDebug()<<nastepnyGracz;
     }
 }
 
