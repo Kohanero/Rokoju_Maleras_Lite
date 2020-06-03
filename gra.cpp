@@ -81,11 +81,12 @@ void Gra::start(QString nazwa)
         Gracz *g = new Gracz(this,nazwa);
         gracze.push_front(g);
     }
+    czyja=new QGraphicsTextItem();
+    scene->addItem(czyja);
     tura();
     if(host) tura();
     state="start";
-    czyja=new QGraphicsTextItem;
-    scene->addItem(czyja);
+
 
 }
 
