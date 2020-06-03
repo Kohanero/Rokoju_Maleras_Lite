@@ -38,7 +38,7 @@ public slots:
 private:
     Gracz *gracz;
     Gracz *turagracza;
-    Gracze *gracze;
+    QList<Gracz*> gracze;
     Talia *talia;
     QString state;
     bool host=false;

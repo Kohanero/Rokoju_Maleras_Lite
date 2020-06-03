@@ -66,7 +66,7 @@ void UdpSocket::readyRead()
         if(t) allConnections.push_front(newAddress);
 
     }
-    if(czekajNaTwojAdres)
+    if(czekajNaTwojAdres && buffer[0]==':')
     {
         twojAdres=buffer.data();
         czekajNaTwojAdres=false;

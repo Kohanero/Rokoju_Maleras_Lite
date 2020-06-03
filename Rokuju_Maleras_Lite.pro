@@ -22,7 +22,6 @@ SOURCES += \
     dodajpoloczenie.cpp \
     gra.cpp \
     gracz.cpp \
-    gracze.cpp \
     instrukcja.cpp \
     kaczor.cpp \
     karta.cpp \

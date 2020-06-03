@@ -72,14 +72,14 @@ QList<Przycisk *> Gra::getPrzyciskGracze()
 void Gra::start(QString nazwa)
 {
     gracz=new Gracz(this,nazwa);
+    gracze.push_front(gracz);
     scene->clear();
-    gracze = new Gracze(gracz);
     talia=new Talia(this);
     talia->tasuj();
     for(QString nazwa:poloczenie->getConnections())
     {
         Gracz *g = new Gracz(this,nazwa);
-        gracze->push_front(g);
+        gracze.push_front(g);
     }
     tura();
     if(host) tura();
@@ -94,12 +94,12 @@ void Gra::stop()
 
 void Gra::menu()
 {
+    host=false;
     if(state=="instrukcja") delete instru;
     else if(state=="start")
     {
         delete gracz;
         delete talia;
-        delete gracze;
         nastole=nullptr;
     }
     else if(state=="polacz") delete dodajPoloczenie;
@@ -181,7 +181,10 @@ void Gra::kolejnatura(int m)
     scene->addItem(nastole);
     if(host)
     {
-        QString nastepnyGracz=gracze->nastepnyGracz();
+        Gracz *g=gracze.last();
+        QString nastepnyGracz=g->getNazwa();
+        gracze.pop_back();
+        gracze.push_front(g);
         if(gracz->getNazwa()==nastepnyGracz) tura();
         else poloczenie->send("tura",QHostAddress(nastepnyGracz));
     }
